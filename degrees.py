@@ -111,7 +111,7 @@ def shortest_path(source, target):
 
         if node.state == target:
             path = backtrack(node)
-            print("Found target.")
+            print("Found the target.")
             return path
         
         neighbors = neighbors_for_person(node.state)
