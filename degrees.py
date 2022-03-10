@@ -105,8 +105,8 @@ def shortest_path(source, target):
     frontier.add(initialNode)
 
     
-    while not frontier.empty:
-        node = frontier.remove
+    while not frontier.empty():
+        node = frontier.remove()
         print(node)
 
         if node.state == target:
@@ -114,7 +114,7 @@ def shortest_path(source, target):
             print("Found target.")
             return path
         
-        neighbors = neighbors_for_person(node.source)
+        neighbors = neighbors_for_person(node.state)
         
         for neighbor in neighbors:
             new_node = Node(state = neighbor[0], parent = node, action = neighbor[1])
