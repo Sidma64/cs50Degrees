@@ -120,7 +120,7 @@ def shortest_path(source, target):
             new_node = Node(state = neighbor[0], parent = node, action = neighbor[1])
             frontier.add(new_node)
     
-    print("Frontier is empty")
+    print("Couldn't find the target.")
     return None
     
     
