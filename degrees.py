@@ -93,7 +93,38 @@ def shortest_path(source, target):
     """
 
     # TODO
-    raise NotImplementedError
+
+    def backtrack(node):
+        path = set()
+        while not node.parent == None:
+            path.append((node.action, node.state))
+            node = node.parent
+    
+    frontier = StackFrontier()
+    initialNode = Node(state = source, parent = None, action = None)
+    frontier.add(initialNode)
+
+    
+    while not frontier.empty:
+        node = frontier.remove
+        print(node)
+
+        if node.state == target:
+            path = backtrack(node)
+            print("Found target.")
+            return path
+        
+        neighbors = neighbors_for_person(node.source)
+        
+        for neighbor in neighbors:
+            new_node = Node(state = neighbor[0], parent = node, action = neighbor[1])
+            frontier.add(new_node)
+    
+    print("Frontier is empty")
+    return None
+    
+    
+            
 
 
 def person_id_for_name(name):

@@ -8,12 +8,14 @@ class Node():
 class StackFrontier():
     def __init__(self):
         self.frontier = []
+        self.explored = set()
 
     def add(self, node):
         self.frontier.append(node)
+        self.explored.add(node.state)
 
-    def contains_state(self, state):
-        return any(node.state == state for node in self.frontier)
+    def is_explored(self, state):
+        return any(explored == state for explored in self.explored)
 
     def empty(self):
         return len(self.frontier) == 0
