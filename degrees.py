@@ -83,7 +83,6 @@ def main():
             movie = movies[path[i + 1][0]]["title"]
             print(f"{i + 1}: {person1} and {person2} starred in {movie}")
 
-
 def shortest_path(source, target):
     """
     Returns the shortest list of (movie_id, person_id) pairs
@@ -95,10 +94,12 @@ def shortest_path(source, target):
     # TODO
 
     def backtrack(node):
-        path = set()
+        path = []
         while not node.parent == None:
             path.append((node.action, node.state))
             node = node.parent
+        path.reverse
+        return path
     
     frontier = StackFrontier()
     initialNode = Node(state = source, parent = None, action = None)
@@ -107,25 +108,29 @@ def shortest_path(source, target):
     
     while not frontier.empty():
         node = frontier.remove()
-        print(node)
 
         if node.state == target:
             path = backtrack(node)
             print("Found the target.")
             return path
         
+        print("# Looking at " + people[node.state]["name"])
         neighbors = neighbors_for_person(node.state)
         
         for neighbor in neighbors:
-            new_node = Node(state = neighbor[0], parent = node, action = neighbor[1])
-            frontier.add(new_node)
+            print("    " + people[neighbor[1]]["name"] + " is neighbor of " + people[node.state]["name"])
+            if neighbor[1] == target:
+                path = backtrack(Node(state = neighbor[1], parent = initialNode, action = neighbor[0]))
+                print("Found the target.")
+                return path
+            if not frontier.is_explored(neighbor[1]):
+                new_node = Node(state = neighbor[1], parent = node, action = neighbor[0])
+                frontier.add(new_node)
+            else:
+                print("        They were already explored")
     
     print("Couldn't find the target.")
     return None
-    
-    
-            
-
 
 def person_id_for_name(name):
     """
