@@ -8,14 +8,14 @@ class Node():
 class StackFrontier():
     def __init__(self):
         self.frontier = []
-        self.explored = set()
+        self.explored_states = set()
 
     def add(self, node):
         self.frontier.append(node)
-        self.explored.add(node.state)
+        self.explored_states.add(node.state)
 
     def is_explored(self, state):
-        return any(explored == state for explored in self.explored)
+        return any(explored_state == state for explored_state in self.explored_states)
 
     def empty(self):
         return len(self.frontier) == 0
