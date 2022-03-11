@@ -55,17 +55,17 @@ def load_data(directory):
 def main():
     if len(sys.argv) > 2:
         sys.exit("Usage: python degrees.py [directory]")
-    directory = "small"
+    directory = sys.argv[1] if len(sys.argv) == 2 else "large"
 
     # Load data from files into memory
     print("Loading data...")
     load_data(directory)
     print("Data loaded.")
 
-    source = person_id_for_name("Tom Hanks")
+    source = person_id_for_name(input("Name: "))
     if source is None:
         sys.exit("Person not found.")
-    target = person_id_for_name("Jack Nicholson")
+    target = person_id_for_name(input("Name: "))
     if target is None:
         sys.exit("Person not found.")
 
@@ -95,12 +95,10 @@ def shortest_path(source, target):
     # TODO
 
     def backtrack(node):
-        path = []
+        path = set()
         while not node.parent == None:
             path.append((node.action, node.state))
             node = node.parent
-        path.reverse
-        return path
     
     frontier = StackFrontier()
     initialNode = Node(state = source, parent = None, action = None)
@@ -109,26 +107,18 @@ def shortest_path(source, target):
     
     while not frontier.empty():
         node = frontier.remove()
+        print(node)
 
         if node.state == target:
             path = backtrack(node)
             print("Found the target.")
             return path
         
-        print("# Looking at " + people[node.state]["name"])
         neighbors = neighbors_for_person(node.state)
         
         for neighbor in neighbors:
-            print("    " + people[neighbor[1]]["name"] + " is neighbor of " + people[node.state]["name"])
-            if neighbor[1] == target:
-                path = backtrack(Node(state = neighbor[1], parent = initialNode, action = neighbor[0]))
-                print("Found the target.")
-                return path
-            if not frontier.is_explored(neighbor[1]):
-                new_node = Node(state = neighbor[1], parent = node, action = neighbor[0])
-                frontier.add(new_node)
-            else:
-                print("        They were already explored")
+            new_node = Node(state = neighbor[0], parent = node, action = neighbor[1])
+            frontier.add(new_node)
     
     print("Couldn't find the target.")
     return None
